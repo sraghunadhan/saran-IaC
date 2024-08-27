@@ -17,8 +17,7 @@ jobs:
     steps:
     - name: Determining Build Number
       id: determineBuildNumber
-      env:
-        run: |-
+      run: |-
          $buildId = "1.0"
       shell: pwsh
   
