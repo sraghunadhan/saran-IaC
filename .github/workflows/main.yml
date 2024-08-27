@@ -20,7 +20,7 @@ jobs:
       id: determineBuildNumber
       env:
         run: |-
-        $buildId = 1.0
+          $buildId = 1.0
       shell: pwsh
   
   Deployment:
