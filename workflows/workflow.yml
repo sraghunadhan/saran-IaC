@@ -1,0 +1,43 @@
+name: Saran
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  GetBuildMetadata-GetBuildMetadata:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Get Build Metadata
+    environment: development
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Determining Build Number
+      id: determineBuildNumber
+      env:
+        run: |-
+        $buildId = 1.0
+      shell: pwsh
+  
+  Deployment:
+    name: App Deployment 
+    needs: GetBuildMetadata-GetBuildMetadata
+    strategy:
+        fail-fast: false
+        matrix:
+          environment:
+            - development
+            - qa
+            - cat
+            - uat
+  Test1:
+    name: Do something
+        run: echo "Do something"
+Test2:
+needs: Test1
+ name: Do something
+        run: echo "Do something 2"
