@@ -9,23 +9,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  GetBuildMetadata-GetBuildMetadata:
+ GetBuildMetadata-GetBuildMetadata:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Get Build Metadata
     environment: development
+    runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v4.1.0
     - name: Determining Build Number
       id: determineBuildNumber
       env:
         run: |-
-          $buildId = 1.0
+         $buildId = "1.0"
       shell: pwsh
   
-  Deployment:
+ Deploymentste0:
     name: App Deployment 
     needs: GetBuildMetadata-GetBuildMetadata
+    runs-on: ubuntu-latest
     strategy:
         fail-fast: false
         matrix:
@@ -34,10 +34,8 @@ jobs:
             - qa
             - cat
             - uat
-  Test1:
-    name: Do something
-        run: echo "Do something"
-  Test2:
-  needs: Test1
-    name: Do something
-        run: echo "Do something 2"
+    environment: ${{ matrix.environment }}
+    steps:
+     - name: Do something
+       run: echo "Do something"
+       
