@@ -35,7 +35,9 @@ jobs:
             - cat
             - uat
     environment: ${{ matrix.environment }}
+    
     steps:
      - name: Do something
-       run: echo "Do something"
+       run: |-
+        echo "Do something"
        
