@@ -22,7 +22,7 @@ jobs:
       shell: pwsh
   
  Deploymentste0:
-    name: App Deployment 
+    name: AppDeployment
     needs: GetBuildMetadata-GetBuildMetadata
     runs-on: ubuntu-latest
     strategy:
@@ -37,4 +37,23 @@ jobs:
     
     steps:
         - name: Do something
-          run: echo "Do something"       
+          run: echo "Do something"
+        
+ PostDeploy:
+    name: Post PostDeploy
+    needs: GetBuildMetadata-GetBuildMetadata
+           AppDeployment (${{ matrix.environment }})
+    runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        matrix:
+          environment:
+            - development
+            - qa
+            - cat
+            - uat
+    environment: ${{ matrix.environment }}
+    
+    steps:
+        - name: Do something
+          run: echo "Do something post deploy"
