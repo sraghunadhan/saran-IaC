@@ -44,7 +44,7 @@ jobs:
     name: Post PostDeploy
     needs: 
       - GetBuildMetadata-GetBuildMetadata
-      -  Deploymentste0
+      -  AppDeployment (qa)
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
