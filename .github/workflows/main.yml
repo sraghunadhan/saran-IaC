@@ -42,7 +42,7 @@ jobs:
  PostDeploy:
     name: Post PostDeploy
     needs: GetBuildMetadata-GetBuildMetadata
-           AppDeployment (${{ matrix.environment }})
+           AppDeployment
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
