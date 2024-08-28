@@ -41,8 +41,9 @@ jobs:
         
  PostDeploy:
     name: Post PostDeploy
-    needs: GetBuildMetadata-GetBuildMetadata
-           AppDeployment
+    needs: 
+      - GetBuildMetadata-GetBuildMetadata
+      -  Deploymentste0
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
