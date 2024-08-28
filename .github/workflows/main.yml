@@ -38,7 +38,8 @@ jobs:
     steps:
         - name: Do something
           run: echo "Do something"
-        
+        - name : Do something again
+          run: echo "Do something again"
  PostDeploy:
     name: Post PostDeploy
     needs: 
