@@ -38,8 +38,8 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          region: [${{ inputs.environmentName}}]
-          environment: [development, qa, cat, uat]
+         region: ['${inputs.regionName}']
+         environment: ["development", "qa", "cat", "uat"]
     environment: ${{ matrix.environment }}
     
     steps:
@@ -51,7 +51,7 @@ jobs:
     name: Post PostDeploy
     needs: 
       - GetBuildMetadata-GetBuildMetadata
-      -  AppDeployment (qa)
+      -  Deploymentste0
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
