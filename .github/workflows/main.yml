@@ -35,7 +35,7 @@ jobs:
     name: Get matrix objects
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.getmatrixobjects.outputs.matrix }}
+      matrix: ${{ steps.getmatrixobjects.matrix }}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobjects
@@ -52,6 +52,7 @@ jobs:
                 agent = "kpmgusadvspectrum-adv-coreT-windows-Test"
           }
         }
+        echo "::set-output name=matrix::$( echo "$map" )"
       shell: pwsh
  Deployment:
     name: AppDeployment
