@@ -38,7 +38,7 @@ jobs:
     - name: Getmatrixobjects
       id: getmatrixobjects
       run: |-
-        map = {
+        $map = {
           EU = {
                 environment = ["Global-Adv-DEV-WEU"]
                 creds= "EU_AZURE_CREDENTIALS"
