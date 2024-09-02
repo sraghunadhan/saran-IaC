@@ -38,7 +38,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-         region: [EU]
+         region: ['${{ inputs.regionName }}']
          environment: ["development", "qa", "cat", "uat"]
     environment: ${{ matrix.environment }}
     
