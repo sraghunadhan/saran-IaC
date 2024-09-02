@@ -7,7 +7,6 @@ on:
       regionName:
             description: 'The region to deploy to'
             required: true
-            default: EU
             type: choice
             options:
               - US
@@ -40,8 +39,8 @@ jobs:
         fail-fast: false
         matrix:
          region: ['${{ inputs.regionName }}']
-         environment: ["development", "qa", "cat", "uat"]
-    
+         releaseenv: ["development", "qa", "cat", "uat"]
+    environment: ${{ matrix.environment }}
     steps:
         - name: Do something
           run: echo "Do something"
@@ -51,7 +50,7 @@ jobs:
     name: Post PostDeploy
     needs: 
       - GetBuildMetadata-GetBuildMetadata
-      -  Deployment
+      - Deployment
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
