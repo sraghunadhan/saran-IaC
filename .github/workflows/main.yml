@@ -41,7 +41,7 @@ jobs:
       id: getmatrixobjects
       run: |-
         $map = {
-            "EU"= [
+            "EU" = [
                 {
                     "givenName" = "John",
                     "surname" = "Doe",
@@ -53,7 +53,7 @@ jobs:
                     "department" =  "Finance1"
                 }
             ],
-            "US"= [
+            "US" = [
                 {
                     "givenName" = "Jane",
                     "surname" = "Doe",
