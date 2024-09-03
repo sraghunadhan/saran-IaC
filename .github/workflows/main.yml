@@ -41,17 +41,26 @@ jobs:
       id: getmatrixobjects
       run: |-
         $map = {
-          EU = {
-                environment = ["Global-Adv-DEV-WEU"]
-                creds= "EU_AZURE_CREDENTIALS"
-                agent = "kpmgusadvspectrum-adv-core-windows-dev"
-          }
-          {
-                environment = ["Global-Adv-test-WEU"]
-                creds= "EU_AZURET_CREDENTIALS"
-                agent = "kpmgusadvspectrum-adv-coreT-windows-Test"
-          }
-        }
+            "EU": [
+                {
+                    "givenName": "John",
+                    "surname": "Doe",
+                    "department": "Finance"
+                },
+                {
+                    "givenName": "John1",
+                    "surname": "Doe1",
+                    "department": "Finance1"
+                }
+            ],
+            "US": [
+                {
+                    "givenName": "Jane",
+                    "surname": "Doe",
+                    "department": "Marketing"
+                }
+            ]
+             }
         echo "::set-output name=matrix::$( echo "$map" )"
       shell: pwsh
  Deployment:
