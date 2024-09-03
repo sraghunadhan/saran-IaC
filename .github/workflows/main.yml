@@ -41,28 +41,28 @@ jobs:
       id: getmatrixobjects
       run: |-
         $map = {
-            "EU": [
+            "EU"= [
                 {
-                    "givenName": "John",
-                    "surname": "Doe",
-                    "department": "Finance"
+                    "givenName" = "John",
+                    "surname" = "Doe",
+                    "department" = "Finance"
                 },
                 {
-                    "givenName": "John1",
-                    "surname": "Doe1",
-                    "department": "Finance1"
+                    "givenName" = "John1",
+                    "surname" = "Doe1",
+                    "department" =  "Finance1"
                 }
             ],
-            "US": [
+            "US"= [
                 {
-                    "givenName": "Jane",
-                    "surname": "Doe",
-                    "department": "Marketing"
+                    "givenName" = "Jane",
+                    "surname" = "Doe",
+                    "department" = "Marketing"
                 }
             ]
              }
         echo "::set-output name=matrix::$( echo "$map" )"
-      shell: pwsh
+      shell: bash
  Deployment:
     name: AppDeployment
     needs: GetBuildMetadata-GetBuildMetadata
