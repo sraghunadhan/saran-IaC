@@ -62,7 +62,7 @@ jobs:
             ]
              }
         echo "::set-output name=matrix::$( echo "$map" )"
-      shell: bash
+      shell: pwsh
 #  Deployment:
 #     name: AppDeployment
 #     needs: GetBuildMetadata-GetBuildMetadata
