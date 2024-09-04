@@ -39,13 +39,14 @@ jobs:
       matrix: ${{ steps.getmatrixobjects.outputs.matrix }}
       matrixenvironments: ${{ steps.getmatrixobjects.outputs.matrixenvironments }}
       map: ${{ steps.getmatrixobjects.outputs.map }}
+      envconfig: ${{ steps.getmatrixobjects.outputs.envconfig }}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobjects
       run: |
          map={\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
-         echo $map >> $GITHUB_OUTPUT
-         echo $map
+         echo "envconfig<<EOF"$'\n'"$map"$'\n'EOF >> "$GITHUB_OUTPUT".
+         echo $envconfig
          echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])"
          echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])" >> $GITHUB_OUTPUT
          echo $matrix
@@ -67,11 +68,11 @@ jobs:
     environment: ${{ matrix.environment }}
     steps:
         - name: Do something
-          run: echo "Do something"
+          run:  echo "Do something"
         - name : Do something CREDS
-          run: echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
+          run:   echo ${{ needs.BuildMatrix.outputs.matrix) }} | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
         - name : Do something AGENT
-          run: echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
+          run:   echo ${{ needs.BuildMatrix.outputs.matrix) }} | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
 #  PostDeploy:
 #     name: Post PostDeploy
 #     needs: 
