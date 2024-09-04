@@ -38,16 +38,19 @@ jobs:
     outputs:
       matrix: ${{ steps.getmatrixobjects.outputs.matrix }}
       matrixenvironments: ${{ steps.getmatrixobjects.outputs.matrixenvironments }}
+      map: ${{ steps.getmatrixobjects.outputs.map }}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobjects
       run: |
          map={\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
+         echo $map >> $GITHUB_OUTPUT
+         echo $map
          echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])"
          echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])" >> $GITHUB_OUTPUT
          echo $matrix
-        #  echo "matrixenvironments=$(echo $map|jq -r .${{inputs.regionName}})" >> $GITHUB_OUTPUT
-        #  echo $matrixenvironments
+         echo "matrixenvironments=$(echo $map|jq -c .${{inputs.regionName}})" >> $GITHUB_OUTPUT
+         echo $matrixenvironments
       shell: bash
  Deployment:
     name: AppDeployment
