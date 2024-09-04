@@ -40,9 +40,10 @@ jobs:
     - name: Getmatrixobjects
       id: getmatrixobjects
       run: |
-         $map={\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
+         $map =  {\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
          echo "matrix=$(jq -r [.${{inputs.regionName}}[].environment])" 
          echo $matrix
+      shell: bash
 #  Deployment:
 #     name: AppDeployment
 #     needs: GetBuildMetadata-GetBuildMetadata
