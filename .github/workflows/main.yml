@@ -8,6 +8,7 @@ on:
             description: 'The region to deploy to'
             required: true
             type: choice
+            default: EU
             options:
               - US
               - EU
