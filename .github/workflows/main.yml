@@ -70,7 +70,7 @@ jobs:
         - name: Do something
           run:  echo "Do something"
         - name : Do something CREDS
-          run:   echo ${{ needs.BuildMatrix.outputs.envconfig }} | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
+          run:   echo ${{ BuildMatrix.outputs.envconfig }} | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
         - name : Do something AGENT
           run:   echo ${{ needs.BuildMatrix.outputs.envconfig }} | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
 #  PostDeploy:
