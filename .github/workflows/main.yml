@@ -35,30 +35,14 @@ jobs:
     name: Get matrix objects
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.getmatrixobjects.matrix }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobjects
-      run: |-
-        $map = {
-                {
-                    "givenName" = "John",
-                    "surname" = "Doe",
-                    "department" = "Finance"
-                },
-                {
-                    "givenName" = "John1",
-                    "surname" = "Doe1",
-                    "department" =  "Finance1"
-                },
-                {
-                    "givenName" = "Jane",
-                    "surname" = "Doe",
-                    "department" = "Marketing"
-                }
-             }
-        echo "::set-output name=matrix::$( echo "$map" )"
-      shell: pwsh
+      run: |
+         $map =  {"include": [{"env": "Dev"},{"env": "tst"}]}
+         echo "matrix=$(jq -c . < .$map)" 
+         echo $map
 #  Deployment:
 #     name: AppDeployment
 #     needs: GetBuildMetadata-GetBuildMetadata
