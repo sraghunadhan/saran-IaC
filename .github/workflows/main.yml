@@ -63,40 +63,40 @@ jobs:
              }
         echo "::set-output name=matrix::$( echo "$map" )"
       shell: bash
- Deployment:
-    name: AppDeployment
-    needs: GetBuildMetadata-GetBuildMetadata
-    runs-on: ubuntu-latest
-    strategy:
-        fail-fast: false
-        max-parallel: 1
-        matrix:
-         environment: ${{ fromJson(needs.BuildMatrix.outputs.matrix) }}
+#  Deployment:
+#     name: AppDeployment
+#     needs: GetBuildMetadata-GetBuildMetadata
+#     runs-on: ubuntu-latest
+#     strategy:
+#         fail-fast: false
+#         max-parallel: 1
+#         matrix:
+#          environment: ${{ fromJson(needs.BuildMatrix.outputs.matrix) }}
       
-    environment: ${{ matrix.environment }}
-    steps:
-        - name: Do something
-          run: echo "Do something"
-        - name : Do something CREDS
-          run: echo map[${{ github.event.inputs.regionName }}].creds
-        - name : Do something AGENT
-          run: echo map[${{ github.event.inputs.regionName }}].agent 
- PostDeploy:
-    name: Post PostDeploy
-    needs: 
-      - GetBuildMetadata-GetBuildMetadata
-      - Deployment
-    runs-on: ubuntu-latest
-    strategy:
-        fail-fast: false
-        matrix:
-          environment:
-            - development
-            - qa
-            - cat
-            - uat
-    environment: ${{ matrix.environment }}
+#     environment: ${{ matrix.environment }}
+#     steps:
+#         - name: Do something
+#           run: echo "Do something"
+#         - name : Do something CREDS
+#           run: echo map[${{ github.event.inputs.regionName }}].creds
+#         - name : Do something AGENT
+#           run: echo map[${{ github.event.inputs.regionName }}].agent 
+#  PostDeploy:
+#     name: Post PostDeploy
+#     needs: 
+#       - GetBuildMetadata-GetBuildMetadata
+#       - Deployment
+#     runs-on: ubuntu-latest
+#     strategy:
+#         fail-fast: false
+#         matrix:
+#           environment:
+#             - development
+#             - qa
+#             - cat
+#             - uat
+#     environment: ${{ matrix.environment }}
     
-    steps:
-        - name: Do something
-          run: echo "Do something post deploy"
+#     steps:
+#         - name: Do something
+#           run: echo "Do something post deploy"
