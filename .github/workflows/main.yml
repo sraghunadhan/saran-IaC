@@ -51,7 +51,7 @@ jobs:
           echo 'out1<<EOF' >> $GITHUB_OUTPUT
           echo $map >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
-          echo out1
+          echo $out1
          echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])"
          echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])" >> $GITHUB_OUTPUT
          echo $matrix
