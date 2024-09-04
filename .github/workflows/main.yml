@@ -42,9 +42,9 @@ jobs:
       id: getmatrixobjects
       run: |
          map={\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
-         echo "matrixenvironments=$($map|jq -r [.${{inputs.regionName}}[].environment])" 
+         echo "matrix=$(echo $map|jq -r [.${{inputs.regionName}}[].environment])" 
          echo $matrix
-         echo "matrixenvironments=$($map|jq -r .${{inputs.regionName}})" 
+         echo "matrixenvironments=$(echo $map|jq -r .${{inputs.regionName}})" 
          echo $matrixenvironments
       shell: bash
 #  Deployment:
