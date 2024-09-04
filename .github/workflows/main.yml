@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrixenvironments: ${{ steps.set-matrix.outputs.matrixenvironments }}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobjects
@@ -47,24 +48,26 @@ jobs:
          echo "matrixenvironments=$(echo $map|jq -r .${{inputs.regionName}})" 
          echo $matrixenvironments
       shell: bash
-#  Deployment:
-#     name: AppDeployment
-#     needs: GetBuildMetadata-GetBuildMetadata
-#     runs-on: ubuntu-latest
-#     strategy:
-#         fail-fast: false
-#         max-parallel: 1
-#         matrix:
-#          environment: ${{ fromJson(needs.BuildMatrix.outputs.matrix) }}
+ Deployment:
+    name: AppDeployment
+    needs: 
+    - GetBuildMetadata-GetBuildMetadata
+    - BuildMatrix
+    runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        max-parallel: 1
+        matrix:
+         environment: ${{ fromJson(needs.BuildMatrix.outputs.matrix) }}
       
-#     environment: ${{ matrix.environment }}
-#     steps:
-#         - name: Do something
-#           run: echo "Do something"
-#         - name : Do something CREDS
-#           run: echo map[${{ github.event.inputs.regionName }}].creds
-#         - name : Do something AGENT
-#           run: echo map[${{ github.event.inputs.regionName }}].agent 
+    environment: ${{ matrix.environment }}
+    steps:
+        - name: Do something
+          run: echo "Do something"
+        - name : Do something CREDS
+          run: echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }}).subscription'
+        - name : Do something AGENT
+          run: echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }}).agentPoolName'
 #  PostDeploy:
 #     name: Post PostDeploy
 #     needs: 
