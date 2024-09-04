@@ -66,9 +66,9 @@ jobs:
         - name: Do something
           run: echo "Do something"
         - name : Do something CREDS
-          run: "$(echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }}).subscription')"
+          run: "$(echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .subscription')"
         - name : Do something AGENT
-          run: "$(echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }}).agentPoolName')"
+          run: echo $map | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
 #  PostDeploy:
 #     name: Post PostDeploy
 #     needs: 
