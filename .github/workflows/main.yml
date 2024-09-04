@@ -73,7 +73,7 @@ jobs:
     environment: ${{ matrix.environment }}
     steps:
         - name: Do something
-          run:  echo ${{ needs.BuildMatrix.outputs.envconfig }} {{ steps.getmatrixobjects.outputs.out1 }}
+          run:  echo "${{ needs.BuildMatrix.outputs.out1 }} {{ steps.getmatrixobjects.outputs.envconfig }}"
         - name : Do something CREDS
           run:   echo "${{ needs.BuildMatrix.outputs.envconfig }}" | jq  '[.${{inputs.regionName}}[] | select(.environment == ${{ matrix.environment }})| .agentPoolName'
         - name : Do something AGENT
