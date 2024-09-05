@@ -69,7 +69,6 @@ jobs:
     steps:
         - name: Do something
           uses: ./.github/workflows/${{inputs.regionName}}_deployment.yml
-          run:  echo ${{ needs.BuildMatrix.outputs.envconfig }}
         - name : Do something CREDS
           run:   echo "${{ needs.BuildMatrix.outputs.envconfig }}' | jq  '.${{inputs.regionName}}[] | select(.environment == "${{ matrix.environment }}")| .agentPoolName'"
         - name : Do something sub
