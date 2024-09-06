@@ -69,7 +69,7 @@ jobs:
           }
           }
           echo $environment >> $GITHUB_OUTPUT
-          echo "powershellmatrix=echo($environment)"
+          echo $environment
       shell: pwsh
  Deployment:
     name: AppDeployment
@@ -81,7 +81,7 @@ jobs:
         fail-fast: false
         max-parallel: 1
         matrix:
-         environment: ${{ fromjson(needs.BuildMatrix.outputs.powershellmatrix) }}
+         environment: ${{ needs.BuildMatrix.outputs.powershellmatrix }}
       
     environment: ${{ matrix.environment }}
     steps:
