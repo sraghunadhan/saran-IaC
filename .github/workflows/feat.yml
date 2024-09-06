@@ -50,6 +50,7 @@ on:
     - Saran
     branches:
     - main
+    - feat
     types: completed
 
 jobs:
