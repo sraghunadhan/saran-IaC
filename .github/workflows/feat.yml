@@ -1,0 +1,64 @@
+name: matrix_v2
+on:
+  push:
+    branches:
+      - main
+      - feat
+  workflow_dispatch:
+    inputs:
+      API_NAME:
+        description: 'The API to deploy'
+        required: true
+        type: choice
+        options:
+        #   - ad
+          - auth
+        #   - devops
+        #   - powerbi
+          - workspace
+      regionName:
+          description: 'The region to deploy to'
+          required: true
+          type: choice
+          default: EU
+          options:
+            - US
+            - EU
+            - AU
+            - APAC
+      # environmentName:
+      #       description: 'The environment to deploy to'
+      #       required: true
+      #       type: choice
+      #       options:
+      #         - Global-Adv-DEV-WEU
+      installAppServiceExtensions:
+        description: Install App Service Extensions
+        default: false
+        type: boolean
+        required: true
+      deployToSlot:
+        description: Deploy to slot
+        default: true
+        type: boolean
+        required: true
+      buildId:
+        type: string
+        required: true  
+  workflow_run:
+    workflows:
+    - Saran
+    branches:
+    - main
+    types: completed
+
+jobs:
+ GetBuildMetadata:
+    name: Get Build Metadata
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: print
+      run: |
+       echo {{inputs.regionName}}
