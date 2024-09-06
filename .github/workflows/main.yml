@@ -41,6 +41,7 @@ jobs:
       matrixenvironments: ${{ steps.getmatrixobjects.outputs.matrixenvironments }}
       map: ${{ steps.getmatrixobjects.outputs.map }}
       envconfig: ${{ steps.getmatrixobjects.outputs.envconfig }}
+      powershellmatrix: ${{ steps.getmatrixobjectspowershell.outputs.environment }}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobjects
@@ -54,6 +55,22 @@ jobs:
          echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])" >> $GITHUB_OUTPUT
          echo $matrix
       shell: bash
+    - name: Getmatrixobjectspowershell
+      id: getmatrixobjectspowershell
+      run: | 
+         if("${{env.region}}" = "EU")
+          {
+               $environment = 'dev-weu','test-weu'
+          }
+         elseif($region = "US")
+          {
+           {
+               $environment = 'dev-us','test-us'
+          }
+          }
+          echo $environment >> $GITHUB_OUTPUT
+          echo "powershellmatrix=echo($environment)"
+      shell: pwsh
  Deployment:
     name: AppDeployment
     needs: 
@@ -64,14 +81,14 @@ jobs:
         fail-fast: false
         max-parallel: 1
         matrix:
-         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+         environment: ${{ fromjson(needs.BuildMatrix.outputs.powershellmatrix) }}
       
     environment: ${{ matrix.environment }}
     steps:
         - name : Do something CREDS
-          run:   echo "${{ needs.BuildMatrix.outputs.envconfig }}' | jq  '.${{env.region}}[] | select(.environment == "${{ matrix.environment }}")| .agentPoolName'"
+          run:   echo "${{ matrix.environment }}'"
         - name : Do something sub
-          run:   echo ${{ needs.BuildMatrix.outputs.envconfig }} | jq  '.${{env.region}}[] | select(.environment == "${{ matrix.environment }}"")| .subscription'
+          run:   echo ${{ matrix.environment }}
 #  PostDeploy:
 #     name: Post PostDeploy
 #     needs: 
