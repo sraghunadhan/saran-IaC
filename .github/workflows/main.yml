@@ -18,7 +18,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
+env:
+  region: ${{ github.event.inputs.regionName || 'EU' }}
 jobs:
  GetBuildMetadata-GetBuildMetadata:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -49,8 +50,8 @@ jobs:
           echo $map >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
           echo $envconfig
-         echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])"
-         echo "matrix=$(echo $map|jq -c [.${{inputs.regionName}}[].environment])" >> $GITHUB_OUTPUT
+         echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])"
+         echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])" >> $GITHUB_OUTPUT
          echo $matrix
       shell: bash
  Deployment:
@@ -70,9 +71,9 @@ jobs:
         - name: Do something
           uses: ./.github/workflows/"${{ inputs.regionName }}"_deployment.yml
         - name : Do something CREDS
-          run:   echo "${{ needs.BuildMatrix.outputs.envconfig }}' | jq  '.${{inputs.regionName}}[] | select(.environment == "${{ matrix.environment }}")| .agentPoolName'"
+          run:   echo "${{ needs.BuildMatrix.outputs.envconfig }}' | jq  '.${{env.region}}[] | select(.environment == "${{ matrix.environment }}")| .agentPoolName'"
         - name : Do something sub
-          run:   echo ${{ needs.BuildMatrix.outputs.envconfig }} | jq  '.${{inputs.regionName}}[] | select(.environment == "${{ matrix.environment }}"")| .subscription'
+          run:   echo ${{ needs.BuildMatrix.outputs.envconfig }} | jq  '.${{env.region}}[] | select(.environment == "${{ matrix.environment }}"")| .subscription'
 #  PostDeploy:
 #     name: Post PostDeploy
 #     needs: 
