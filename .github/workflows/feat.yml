@@ -4,6 +4,7 @@ on:
   push:
    branches:
     - feat
+    - main
   workflow_dispatch:
     inputs:
       regionName:
@@ -70,7 +71,7 @@ jobs:
                $environment = @("dev-us","test-us")
           }
           }
-          echo $environment >> $GITHUB_OUTPUT
+          echo $environment | convertTo-Json >> $GITHUB_OUTPUT
           echo "powershellmatrix=echo($environment)"
       shell: pwsh
  Deployment:
