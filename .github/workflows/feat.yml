@@ -40,7 +40,7 @@ jobs:
     name: Get matrix objects
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.getmatrixobjects.outputs.environment}}
+      matrix: ${{ steps.getmatrixobjects.outputs.buildenv}}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobject
@@ -55,8 +55,9 @@ jobs:
                $environment = @("dev-us","test-us")
           }
           }
-         $environment | convertTo-Json -Compress >> $env:GITHUB_OUTPUT
-          echo "powershellmatrix=echo($environment)"
+          $printbuildenv =  $environment | convertTo-Json -Compress
+          echo $printbuildenv 
+          echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
       shell: pwsh
  Deployment:
     name: AppDeployment
