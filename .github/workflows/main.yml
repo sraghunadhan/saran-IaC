@@ -58,7 +58,7 @@ jobs:
     - name: Getmatrixobjectspowershell
       id: getmatrixobjectspowershell
       run: | 
-         if("${{env.region}}" = "EU")
+         if("${{env.region}}" == "EU")
           {
                $environment = 'dev-weu','test-weu'
           }
