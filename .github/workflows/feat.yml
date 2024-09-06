@@ -2,6 +2,8 @@ name: Saran
 
 on:
   push:
+   branches:
+    - feat
   workflow_dispatch:
     inputs:
       regionName:
@@ -60,12 +62,12 @@ jobs:
       run: | 
          if(${{env.region}} = "EU")
           {
-               $environment = 'dev-weu','test-weu'
+               $environment = @("dev-weu","test-weu")
           }
          elseif($region = "US")
           {
            {
-               $environment = 'dev-us','test-us'
+               $environment = @("dev-us","test-us")
           }
           }
           echo $environment >> $GITHUB_OUTPUT
@@ -81,7 +83,7 @@ jobs:
         fail-fast: false
         max-parallel: 1
         matrix:
-         environment: ${{ fromjson(needs.BuildMatrix.outputs.powershellmatrix) }}
+         environment: ${{ (needs.BuildMatrix.outputs.powershellmatrix) }}
       
     environment: ${{ matrix.environment }}
     steps:
