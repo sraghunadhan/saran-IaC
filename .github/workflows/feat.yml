@@ -71,7 +71,7 @@ jobs:
                $environment = @("dev-us","test-us")
           }
           }
-          echo $environment | convertTo-Json >> $GITHUB_OUTPUT
+          echo $environment | convertTo-Json -Compress >> $GITHUB_OUTPUT
           echo "powershellmatrix=echo($environment)"
       shell: pwsh
  Deployment:
