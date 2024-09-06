@@ -49,7 +49,6 @@ on:
     - Saran
     branches:
     - main
-    - feat
     types: completed
 env:
   region: ${{ github.event.inputs.regionName || 'EU' }}
