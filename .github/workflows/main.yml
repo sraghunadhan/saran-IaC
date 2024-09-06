@@ -68,8 +68,6 @@ jobs:
       
     environment: ${{ matrix.environment }}
     steps:
-        - name: Do something
-          uses: ./.github/workflows/"${{ inputs.regionName }}"_deployment.yml
         - name : Do something CREDS
           run:   echo "${{ needs.BuildMatrix.outputs.envconfig }}' | jq  '.${{env.region}}[] | select(.environment == "${{ matrix.environment }}")| .agentPoolName'"
         - name : Do something sub
