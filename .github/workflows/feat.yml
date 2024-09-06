@@ -1,0 +1,112 @@
+name: Saran
+
+on:
+  push:
+   branches:
+    - feat
+  workflow_dispatch:
+    inputs:
+      regionName:
+            description: 'The region to deploy to'
+            required: true
+            type: choice
+            default: EU
+            options:
+              - US
+              - EU
+              - AU
+              - APAC
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  region: ${{ github.event.inputs.regionName || 'EU' }}
+jobs:
+ GetBuildMetadata-GetBuildMetadata:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Get Build Metadata
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+    - name: Determining Build Number
+      id: determineBuildNumber
+      run: |-
+         $buildId = "1.0"
+      shell: pwsh
+ BuildMatrix:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Get matrix objects
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.getmatrixobjects.outputs.matrix }}
+      matrixenvironments: ${{ steps.getmatrixobjects.outputs.matrixenvironments }}
+      map: ${{ steps.getmatrixobjects.outputs.map }}
+      envconfig: ${{ steps.getmatrixobjects.outputs.envconfig }}
+      powershellmatrix: ${{ steps.getmatrixobjectspowershell.outputs.environment }}
+    steps:
+    - name: Getmatrixobjects
+      id: getmatrixobjects
+      run: |
+         map={\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
+          echo 'envconfig<<EOF' >> $GITHUB_OUTPUT
+          echo $map >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+          echo $envconfig
+         echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])"
+         echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])" >> $GITHUB_OUTPUT
+         echo $matrix
+      shell: bash
+    - name: Getmatrixobjectspowershell
+      id: getmatrixobjectspowershell
+      run: | 
+         if("${{env.region}}" -eq "EU")
+          {
+               $environment = @("dev-weu","test-weu")
+          }
+         elseif("${{env.region}}" -eq "US")
+          {
+           {
+               $environment = @("dev-us","test-us")
+          }
+          }
+          echo $environment >> $GITHUB_OUTPUT
+          echo "powershellmatrix=echo($environment)"
+      shell: pwsh
+ Deployment:
+    name: AppDeployment
+    needs: 
+    - GetBuildMetadata-GetBuildMetadata
+    - BuildMatrix
+    runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        max-parallel: 1
+        matrix:
+         environment: ${{ (needs.BuildMatrix.outputs.powershellmatrix) }}
+      
+    environment: ${{ matrix.environment }}
+    steps:
+        - name : Do something CREDS
+          run:   echo "${{ matrix.environment }}'"
+        - name : Do something sub
+          run:   echo ${{ matrix.environment }}
+#  PostDeploy:
+#     name: Post PostDeploy
+#     needs: 
+#       - GetBuildMetadata-GetBuildMetadata
+#       - Deployment
+#     runs-on: ubuntu-latest
+#     strategy:
+#         fail-fast: false
+#         matrix:
+#           environment:
+#             - development
+#             - qa
+#             - cat
+#             - uat
+#     environment: ${{ matrix.environment }}
+    
+#     steps:
+#         - name: Do something
+#           run: echo "Do something post deploy"
