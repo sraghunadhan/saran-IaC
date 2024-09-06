@@ -40,26 +40,10 @@ jobs:
     name: Get matrix objects
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.getmatrixobjects.outputs.matrix }}
-      matrixenvironments: ${{ steps.getmatrixobjects.outputs.matrixenvironments }}
-      map: ${{ steps.getmatrixobjects.outputs.map }}
-      envconfig: ${{ steps.getmatrixobjects.outputs.envconfig }}
-      powershellmatrix: ${{ steps.getmatrixobjectspowershell.outputs.environment }}
+      matrix: ${{ steps.getmatrixobjects.outputs.environment}}
     steps:
     - name: Getmatrixobjects
-      id: getmatrixobjects
-      run: |
-         map={\"EU\":[{\"environment\":\"Global-Adv-DEV-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-QA-PLTAIServices\",\"environmentName\":\"kpmgdevglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dev\"},{\"environment\":\"Global-Adv-test-WEU\",\"regionName\":\"weu\",\"subscription\":\"GO-SUB-Tst-PLTAIServices\",\"environmentName\":\"kpmgTSTglobalemea\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-dtst\"}],\"US\":[{\"environment\":\"Global-US-Adv-test-WEU\",\"regionName\":\"eus2\",\"subscription\":\"GO-SUB-Tst-PLTUSAIServices\",\"environmentName\":\"kpmgTSTglobalUS\",\"agentPoolName\":\"kpmgdev-gac-core-use-windows-US\"}]}
-          echo 'envconfig<<EOF' >> $GITHUB_OUTPUT
-          echo $map >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-          echo $envconfig
-         echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])"
-         echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])" >> $GITHUB_OUTPUT
-         echo $matrix
-      shell: bash
-    - name: Getmatrixobjectspowershell
-      id: getmatrixobjectspowershell
+      id: getmatrixobject
       run: | 
          if("${{env.region}}" -eq "EU")
           {
@@ -71,7 +55,7 @@ jobs:
                $environment = @("dev-us","test-us")
           }
           }
-          echo $environment | convertTo-Json -Compress >> $GITHUB_OUTPUT
+          echo $environment | convertTo-Json -Compress >> $env:GITHUB_OUTPUT
           echo "powershellmatrix=echo($environment)"
       shell: pwsh
  Deployment:
@@ -84,7 +68,7 @@ jobs:
         fail-fast: false
         max-parallel: 1
         matrix:
-         environment: ${{ fromjson(needs.BuildMatrix.outputs.powershellmatrix) }}
+         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
       
     environment: ${{ matrix.environment }}
     steps:
