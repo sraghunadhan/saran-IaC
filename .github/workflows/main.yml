@@ -60,12 +60,12 @@ jobs:
       run: | 
          if("${{env.region}}" -eq "EU")
           {
-               $environment = 'dev-weu','test-weu'
+               $environment = @("dev-weu","test-weu")
           }
          elseif($region -eq "US")
           {
            {
-               $environment = 'dev-us','test-us'
+               $environment = @("dev-wus","test-wus")
           }
           }
           echo $environment >> $GITHUB_OUTPUT
@@ -81,7 +81,7 @@ jobs:
         fail-fast: false
         max-parallel: 1
         matrix:
-         environment: ${{ [needs.BuildMatrix.outputs.powershellmatrix] }}
+         environment: ${{ needs.BuildMatrix.outputs.powershellmatrix }}
       
     environment: ${{ matrix.environment }}
     steps:
