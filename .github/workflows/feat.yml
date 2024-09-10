@@ -47,18 +47,19 @@ jobs:
       run: | 
          if("${{env.region}}" -eq "EU")
           {
-               $environment = @("dev-weu","test-weu")
+               $environment = ["dev-eu","test-eu"]
           }
          elseif("${{env.region}}" -eq "US")
           {
            {
-               $environment = @("dev-us","test-us")
+               $environment = ["dev-us","test-us"]
           }
           }
-          $printbuildenv =  $environment | convertTo-Json -Compress
+          #$printbuildenv =  $environment | convertTo-Json -Compress
           echo $printbuildenv 
-          echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
-      shell: pwsh
+          #echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
+          echo "matrix=$(echo $environment)" >> $GITHUB_OUTPUT
+      shell: bash
  Deployment:
     name: AppDeployment
     needs: 
