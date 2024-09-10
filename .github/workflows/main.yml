@@ -32,7 +32,7 @@ concurrency:
   cancel-in-progress: true
 env:
   region: ${{ github.event.inputs.regionName || 'EU' }}
-  apitype: ${{ github.event.inputs.API_NAME || 'auth' }}
+  #apitype: ${{ github.event.inputs.API_NAME || 'auth' }}
 jobs:
  GetBuildMetadata-GetBuildMetadata:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -84,7 +84,7 @@ jobs:
         needs: 
           - GetBuildMetadata-GetBuildMetadata
           - BuildMatrix
-        if: ${{ env.apitype  == 'auth' }}
+        if: ${{ github.event.inputs.API_NAME || 'auth' }}
         strategy:
           fail-fast: false
           max-parallel: 1
