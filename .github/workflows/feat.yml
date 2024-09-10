@@ -64,7 +64,7 @@ jobs:
         fail-fast: false
         max-parallel: 1
         matrix:
-         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+         environment: ${{ needs.BuildMatrix.outputs.matrix }}
       
     environment: ${{ matrix.environment }}
     steps:
