@@ -40,7 +40,7 @@ jobs:
     name: Get matrix objects
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.getmatrixobjects.outputs.buildenv}}
+      matrix: ${{ steps.getmatrixobject.outputs.matrix}}
     steps:
     - name: Getmatrixobjects
       id: getmatrixobject
