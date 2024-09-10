@@ -1,0 +1,13 @@
+on:
+  workflow_call:
+    inputs:
+      greet:
+        description: terraform working directory
+        type: string
+        default: "."
+
+jobs:
+  compliance:
+    steps:
+        - name: runit
+          run: echo "${{ github.event.inputs.greet}"
