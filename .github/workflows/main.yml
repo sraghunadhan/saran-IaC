@@ -45,7 +45,7 @@ jobs:
     - name: Getmatrixobjects
       id: getmatrixobjects
       run: |
-         envconfig={\"EU\":[\"west-eu\",\"dum-eu\"],\"US\":[\"west-us\",\"dum-\us"],\"AU\":[\"west-au\",\"dum-au\"],\"APAC\":["\west-apac\",\"dum-apac\"]}
+         envconfig={\"EU\":[\"west-eu\",\"dum-eu\"],\"US\":[\"west-us\",\"dum-us\"],\"AU\":[\"west-au\",\"dum-au\"],\"APAC\":[\"west-apac\",\"dum-apac\"]}
          echo "matrix=$(echo $envconfig|jq -c [.${{env.region}}[].environment])" >> $GITHUB_OUTPUT
          echo $matrix
       shell: bash
