@@ -46,9 +46,9 @@ jobs:
       id: getmatrixobject
       run: | 
             if [ "${{env.region}}" == "EU" ]; then
-            $environment = ["dev-eu","test-eu"]
+            environment = ["dev-eu","test-eu"]
             else
-            $environment = ["dev-us","test-us"]
+            environment = ["dev-us","test-us"]
             fi
             #$printbuildenv =  $environment | convertTo-Json -Compress
             echo $printbuildenv 
