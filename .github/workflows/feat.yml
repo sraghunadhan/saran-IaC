@@ -46,12 +46,11 @@ jobs:
       id: getmatrixobject
       run: | 
             if [ "${{env.region}}" == "EU" ]; then
-            environment = ["dev-eu","test-eu"]
+            echo "matrix=$(echo $map|jq -c [.${{env.region}}[].environment])"
+            echo "(environment = ["dev-eu","test-eu"])"
             else
-            environment = ["dev-us","test-us"]
+            echo "(environment = ["dev-us","test-us"]"
             fi
-            #$printbuildenv =  $environment | convertTo-Json -Compress
-            echo $printbuildenv 
             #echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
             echo "matrix=$(echo $environment)" >> $GITHUB_OUTPUT
       shell: bash
