@@ -1,94 +1,94 @@
-name: Saran
+# name: Saran
 
-on:
-  push:
-   branches:
-    - feat
-    - main
-  workflow_dispatch:
-    inputs:
-      regionName:
-            description: 'The region to deploy to'
-            required: true
-            type: choice
-            default: EU
-            options:
-              - US
-              - EU
-              - AU
-              - APAC
+# on:
+#   push:
+#    branches:
+#     - feat
+#     - main
+#   workflow_dispatch:
+#     inputs:
+#       regionName:
+#             description: 'The region to deploy to'
+#             required: true
+#             type: choice
+#             default: EU
+#             options:
+#               - US
+#               - EU
+#               - AU
+#               - APAC
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-env:
-  region: ${{ github.event.inputs.regionName || 'EU' }}
-jobs:
- GetBuildMetadata-GetBuildMetadata:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Get Build Metadata
-    environment: development
-    runs-on: ubuntu-latest
-    steps:
-    - name: Determining Build Number
-      id: determineBuildNumber
-      run: |-
-         $buildId = "1.0"
-      shell: pwsh
- BuildMatrix:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Get matrix objects
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.getmatrixobject.outputs.matrix}}
-    steps:
-    - name: Getmatrixobjects
-      id: getmatrixobject
-      run: | 
-            if [ "${{env.region}}" == "EU" ]; then
-                environment=["dev-eu","test-eu"]
-                echo $environment
-            else
-               environment=["dev-us","test-us"]
-               echo $environment
-            fi
-            #echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
-            echo "matrix=$(echo $environment)" >> $GITHUB_OUTPUT
-      shell: bash
- Deployment:
-    name: AppDeployment
-    needs: 
-    - GetBuildMetadata-GetBuildMetadata
-    - BuildMatrix
-    runs-on: ubuntu-latest
-    strategy:
-        fail-fast: false
-        max-parallel: 1
-        matrix:
-         environment: ${{ needs.BuildMatrix.outputs.matrix }}
-      
-    environment: ${{ matrix.environment }}
-    steps:
-        - name : Do something CREDS
-          run:   echo "${{ matrix.environment }}'"
-        - name : Do something sub
-          run:   echo ${{ matrix.environment }}
-#  PostDeploy:
-#     name: Post PostDeploy
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
+# env:
+#   region: ${{ github.event.inputs.regionName || 'EU' }}
+# jobs:
+#  GetBuildMetadata-GetBuildMetadata:
+#     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#     name: Get Build Metadata
+#     environment: development
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Determining Build Number
+#       id: determineBuildNumber
+#       run: |-
+#          $buildId = "1.0"
+#       shell: pwsh
+#  BuildMatrix:
+#     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#     name: Get matrix objects
+#     runs-on: ubuntu-latest
+#     outputs:
+#       matrix: ${{ steps.getmatrixobject.outputs.matrix}}
+#     steps:
+#     - name: Getmatrixobjects
+#       id: getmatrixobject
+#       run: | 
+#             if [ "${{env.region}}" == "EU" ]; then
+#                 environment=["dev-eu","test-eu"]
+#                 echo $environment
+#             else
+#                environment=["dev-us","test-us"]
+#                echo $environment
+#             fi
+#             #echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
+#             echo "matrix=$(echo $environment)" >> $GITHUB_OUTPUT
+#       shell: bash
+#  Deployment:
+#     name: AppDeployment
 #     needs: 
-#       - GetBuildMetadata-GetBuildMetadata
-#       - Deployment
+#     - GetBuildMetadata-GetBuildMetadata
+#     - BuildMatrix
 #     runs-on: ubuntu-latest
 #     strategy:
 #         fail-fast: false
+#         max-parallel: 1
 #         matrix:
-#           environment:
-#             - development
-#             - qa
-#             - cat
-#             - uat
+#          environment: ${{ needs.BuildMatrix.outputs.matrix }}
+      
 #     environment: ${{ matrix.environment }}
-    
 #     steps:
-#         - name: Do something
-#           run: echo "Do something post deploy"
+#         - name : Do something CREDS
+#           run:   echo "${{ matrix.environment }}'"
+#         - name : Do something sub
+#           run:   echo ${{ matrix.environment }}
+# #  PostDeploy:
+# #     name: Post PostDeploy
+# #     needs: 
+# #       - GetBuildMetadata-GetBuildMetadata
+# #       - Deployment
+# #     runs-on: ubuntu-latest
+# #     strategy:
+# #         fail-fast: false
+# #         matrix:
+# #           environment:
+# #             - development
+# #             - qa
+# #             - cat
+# #             - uat
+# #     environment: ${{ matrix.environment }}
+    
+# #     steps:
+# #         - name: Do something
+# #           run: echo "Do something post deploy"
