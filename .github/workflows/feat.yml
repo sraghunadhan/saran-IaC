@@ -45,20 +45,15 @@ jobs:
     - name: Getmatrixobjects
       id: getmatrixobject
       run: | 
-         if("${{env.region}}" -eq "EU")
-          {
-               $environment = ["dev-eu","test-eu"]
-          }
-         elseif("${{env.region}}" -eq "US")
-          {
-           {
-               $environment = ["dev-us","test-us"]
-          }
-          }
-          #$printbuildenv =  $environment | convertTo-Json -Compress
-          echo $printbuildenv 
-          #echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
-          echo "matrix=$(echo $environment)" >> $GITHUB_OUTPUT
+            if [ "${{env.region}}" == "EU" ]; then
+            $environment = ["dev-eu","test-eu"]
+            else
+            $environment = ["dev-us","test-us"]
+            fi
+            #$printbuildenv =  $environment | convertTo-Json -Compress
+            echo $printbuildenv 
+            #echo "buildenv=$printbuildenv" >> $env:GITHUB_OUTPUT
+            echo "matrix=$(echo $environment)" >> $GITHUB_OUTPUT
       shell: bash
  Deployment:
     name: AppDeployment
