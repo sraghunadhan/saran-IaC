@@ -33,7 +33,7 @@ concurrency:
 env:
   region: ${{ github.event.inputs.regionName || 'EU' }}
   #apitype: ${{ github.event.inputs.API_NAME || 'auth' }}
-  az_creds: ${{var.secretvar}}
+  az_creds: ${{vars.secretvar}}
 jobs:
  GetBuildMetadata-GetBuildMetadata:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
