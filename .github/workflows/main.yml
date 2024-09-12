@@ -90,7 +90,7 @@ jobs:
            environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
         uses: ./.github/workflows/reusable.yml
         with:
-          greet:  ${{ secrets.{{var.SECRETVAR}} }}
+          greet:  "${{ secrets.${{var.SECRETVAR}} }}"
         
 
 #  PostDeploy:
