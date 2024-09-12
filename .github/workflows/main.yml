@@ -77,7 +77,10 @@ jobs:
         - name : Do something CREDS
           run:   echo "${{ matrix.environment }}'"
         - name : Do something sub
-          run:  echo "${{ secrets[vars.SECRETVAR] }}"
+          run:  echo ${{ secrets[vars.SECRETVAR] }}
+        - name : Do something cred
+          run:  echo ${{secrets[vars.SECRETVAR]}} | sed 's/./& /g'
+          
 
  au_Deployment:
         name: AUTH_deployment
