@@ -95,6 +95,8 @@ jobs:
         uses: ./.github/workflows/reusable.yml
         with:
           greet: "okiedokog"
+        secrets:
+          AZURE_CREDENTIALS: ${{ secrets[vars.SECRETVAR] }}
         
 
 #  PostDeploy:
