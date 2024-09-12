@@ -11,4 +11,4 @@ jobs:
    runs-on: windows-latest
    steps:
       - name: runit
-        run: echo "${{ github.event.inputs.greet}}"
+        run: echo "${{ github.event.inputs.greet }}"
