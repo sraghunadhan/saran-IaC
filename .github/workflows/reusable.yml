@@ -11,4 +11,4 @@ jobs:
    runs-on: ubuntu-latest
    steps:
       - name: runit
-        run: echo ${{ github.event.inputs.greet }}
+        run: echo ${{ inputs.greet }}
