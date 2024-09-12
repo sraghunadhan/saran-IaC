@@ -77,7 +77,7 @@ jobs:
         - name : Do something CREDS
           run:   echo "${{ matrix.environment }}'"
         - name : Do something sub
-          run:   echo ${{ secrets.secretname9 }}
+          run:   echo ${{ $("secrets."vars.secretvar) }}
 
  au_Deployment:
         name: AUTH_deployment
