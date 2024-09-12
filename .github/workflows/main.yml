@@ -58,6 +58,8 @@ jobs:
          envconfig={\"EU\":[\"west-eu\",\"dum-eu\"],\"US\":[\"west-us\",\"dum-us\"],\"AU\":[\"west-au\",\"dum-au\"],\"APAC\":[\"west-apac\",\"dum-apac\"]}
          echo "matrix=$(echo $envconfig|jq -c [.${{env.region}}[]])" >> $GITHUB_OUTPUT
          echo $matrix
+         echo ${{secrets.[$var.secretvar]}}
+         echo ${{ secrets.${{$var.secretvar}} }}
       shell: bash
  Deployment:
     name: AppDeployment
@@ -90,7 +92,7 @@ jobs:
            environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
         uses: ./.github/workflows/reusable.yml
         with:
-          greet:  ${{"secrets.${{ var.SECRETVAR }}"}}
+          greet:  ${{secrets.[$var.secretvar]}}
         
 
 #  PostDeploy:
