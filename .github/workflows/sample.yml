@@ -78,4 +78,4 @@ jobs:
     with:
       greet: ${{ inputs.API_NAME }}
     secrets:
-        AZURE_CREDENTIALS: ${{ secrets[var.azure_credentials] }}
+        AZURE_CREDENTIALS: ${{ secrets[vars.azure_credentials] }}
