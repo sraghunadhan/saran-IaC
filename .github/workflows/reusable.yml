@@ -5,6 +5,9 @@ on:
         description: terraform working directory
         type: string
         default: "."
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
 
 jobs:
   compliance:
