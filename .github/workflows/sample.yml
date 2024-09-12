@@ -1,0 +1,81 @@
+name: sample
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      API_NAME:
+        description: 'The API to deploy'
+        required: true
+        type: choice
+        options:
+        #   - ad
+          - auth
+        #   - devops
+        #   - powerbi
+          - workspace
+      regionName:
+          description: 'The region to deploy to'
+          required: true
+          type: choice
+          default: EU
+          options:
+            - EU
+      # environmentName:
+      #       description: 'The environment to deploy to'
+      #       required: true
+      #       type: choice
+      #       options:
+      #         - Global-Adv-DEV-WEU
+      installAppServiceExtensions:
+        description: Install App Service Extensions
+        default: false
+        type: boolean
+        required: true
+      deployToSlot:
+        description: Deploy to slot
+        default: true
+        type: boolean
+        required: true
+      buildId:
+        type: string
+        required: true  
+env:
+  VSTS_ARM_REST_IGNORE_SSL_ERRORS: true
+  region: ${{ github.event.inputs.regionName || 'EU' }}
+jobs:
+  
+  #Build matrix based on inputs received
+  BuildMatrix:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Set matrix objects
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
+    steps:
+    - name: setmatrixobjects
+      id: setmatrixobjects
+      #Below script is to set the matrix objects based on the variable regionconfig
+      run: | 
+          config= ${{var.regionconfig}}
+          echo "matrix=$(echo $regionconfig|jq -c [.${{env.region}}[]])" >> $GITHUB_OUTPUT
+          echo $matrix
+      shell: bash
+  
+  #Deploy auth - hardcoding values to be moved to environment variables
+  auth_deployment:
+    name: AUTH_deployment
+    needs: 
+      - BuildMatrix
+     #if: ${{ inputs.API_NAME == 'auth' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        environment: "${{ fromjson(needs.BuildMatrix.outputs.matrix) }}"
+    uses: ./.github/workflows/reusable.yml
+    with:
+      greet: ${{ inputs.API_NAME }}
+    secrets:
+        AZURE_CREDENTIALS: ${{ secrets[var.azure_credentials] }}
