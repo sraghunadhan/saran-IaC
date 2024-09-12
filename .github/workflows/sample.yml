@@ -58,8 +58,8 @@ jobs:
       id: setmatrixobjects
       #Below script is to set the matrix objects based on the variable regionconfig
       run: | 
-          config= ${{var.regionconfig}}
-          echo "matrix=$(echo $regionconfig|jq -c [.${{env.region}}[]])" >> $GITHUB_OUTPUT
+          config= ${{vars.regionconfig}}
+          echo "matrix=$(echo $config|jq -c [.${{env.region}}[]])" >> $GITHUB_OUTPUT
           echo $matrix
       shell: bash
   
