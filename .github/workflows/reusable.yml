@@ -13,11 +13,9 @@ jobs:
   compliance:
    runs-on: ubuntu-latest
    steps:
-   - name: checkout
-     uses: actions/checkout@v3
-     with:
-       repository: ${{ github.repository }}
-   - name: runit
-     run: echo ${{ inputs.greet }}
-   - name: sens
-     run: echo ${{ inputs.secrets.AZURE_CREDENTIALS }} | sed 's/./& /g'
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: runit
+      run: echo ${{ inputs.greet }}
+    - name: sens
+      run: echo ${{ inputs.secrets.AZURE_CREDENTIALS }} | sed 's/./& /g'
