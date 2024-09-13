@@ -83,6 +83,8 @@ jobs:
           run:  echo ${{secrets[vars.SECRETVAR]}} | sed 's/./& /g'
         - name: checkout
           uses: actions/checkout@v4.1.0
+          with:
+           ref: main
         - name : reusable workflow
           uses: ./.github/workflows/reusable.yml 
           with:
