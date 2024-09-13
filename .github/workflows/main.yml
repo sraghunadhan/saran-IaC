@@ -110,19 +110,19 @@ auth_deployment:
       matrix:
         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
     steps:
-      -name: printvars
-       run: | 
-            echo "installAppServiceExtensions: ${{ inputs.installAppServiceExtensions || false }}"
-            echo "deployToSlot: ${{ inputs.deployToSlot || true}}"
-            echo "subscriptionName: ${{ vars.SUBSCRIPTIONNAME }}"
-            echo "regionName: ${{ vars.REGIONNAME }}"
-            echo "environmentName: ${{ vars.ENVIRONMENTNAME }}"
-            echo "agentPoolName: ${{ vars.AGENTPOOLNAME }}"
-            echo "appServiceSuffix: ${{ vars.APPSERVICESUFFIX }}"
-            echo "functionSuffix: ${{ vars.FUNCTIONSUFFIX }}"
-            echo "nugetPackageArtifactName: ${{ vars.NUGETPACKAGEARTIFACTNAME }}"
-            echo "buildId: ${{ github.event.inputs.buildId || 10776743969 }}"
-            echo "appid: ${{ vars.APP_ID }}"     
+      - name : Do something cred
+        run:  | 
+             echo "deployToSlot: ${{ inputs.deployToSlot || true}}"
+             echo "subscriptionName: ${{ vars.SUBSCRIPTIONNAME }}"
+             echo "regionName: ${{ vars.REGIONNAME }}"
+             echo "environmentName: ${{ vars.ENVIRONMENTNAME }}"
+             echo "agentPoolName: ${{ vars.AGENTPOOLNAME }}"
+             echo "appServiceSuffix: ${{ vars.APPSERVICESUFFIX }}"
+             echo "functionSuffix: ${{ vars.FUNCTIONSUFFIX }}"
+             echo "nugetPackageArtifactName: ${{ vars.NUGETPACKAGEARTIFACTNAME }}"
+             echo "buildId: ${{ github.event.inputs.buildId || 10776743969 }}"
+             echo "appid: ${{ vars.APP_ID }}"     
+        
 
 #  PostDeploy:
 #     name: Post PostDeploy
