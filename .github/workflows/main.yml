@@ -91,9 +91,10 @@ jobs:
           fail-fast: false
           max-parallel: 1
           matrix:
-           environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
-        uses: ./.github/workflows/reusable.yml
+           target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+        uses: ./.github/workflows/reusable.yml 
         with:
+          environment: ${{ matrix.environment }}
           greet: "okiedokog"
         secrets:
           AZURE_CREDENTIALS: ${{ secrets[vars.SECRETVAR] }}
