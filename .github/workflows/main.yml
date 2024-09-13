@@ -98,7 +98,7 @@ jobs:
           max-parallel: 1
           matrix:
            target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
-        uses: ./.github/workflows/reusable.yml 
+        uses: ./.github/workflows/reusable.yml
         with:
           greet: "okiedokog"
         secrets:
