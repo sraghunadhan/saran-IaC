@@ -84,7 +84,7 @@ jobs:
         - name : Do something dd 
           uses: actions/checkout@v4
         - name : Do something dd2 
-          uses: ./.github/workflows/reusable.yml 
+          uses: sraghunadhan/saran-IaC/.github/workflows/reusable.yml@main
           with:
             greet: "okiedokog"
             secrets: inherit
@@ -97,12 +97,10 @@ jobs:
           fail-fast: false
           max-parallel: 1
           matrix:
-           target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+           target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }} 
         uses: ./.github/workflows/reusable.yml
         with:
           greet: "okiedokog"
-        secrets:
-          AZURE_CREDENTIALS: ${{ secrets[vars.SECRETVAR] }}
           
 
 #  PostDeploy:
