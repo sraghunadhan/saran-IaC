@@ -109,7 +109,7 @@ jobs:
         max-parallel: 1
         matrix:
           environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
-      environment: ${{ matrix.environment }}
+      #environment: ${{ matrix.environment }}
       steps:
       - name : Do something cred
         run:  | 
