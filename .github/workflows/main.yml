@@ -81,15 +81,13 @@ jobs:
           run:  echo ${{ secrets[vars.SECRETVAR] }}
         - name : Do something cred
           run:  echo ${{secrets[vars.SECRETVAR]}} | sed 's/./& /g'
-        - name: checkout
-          uses: actions/checkout@v2
-        - name : reusable workflow
+        - name : Do something dd 
+          uses: actions/checkout@v4
+        - name : Do something dd2 
           uses: ./.github/workflows/reusable.yml 
           with:
-           greet: "okiedokog"
-           secrets: inherit
-          
-
+            greet: "okiedokog"
+            secrets: inherit
  au_Deployment:
         name: AUTH_deployment
         needs: 
