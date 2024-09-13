@@ -76,6 +76,6 @@ jobs:
         environment: "${{ fromjson(needs.BuildMatrix.outputs.matrix) }}"
     uses: ./.github/workflows/reusable.yml
     with:
-      greet: ${{ inputs.API_NAME }}
+      greet: $ {{vars.azure_credentials }}
     secrets:
         AZURE_CREDENTIALS: ${{ secrets[vars.azure_credentials] }}
