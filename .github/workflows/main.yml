@@ -102,6 +102,13 @@ jobs:
           
  dump_contexts_to_log:
     runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        max-parallel: 1
+        matrix:
+         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+      
+    environment: ${{ matrix.environment }}
     steps:
       - name: Dump GitHub context
         env:
