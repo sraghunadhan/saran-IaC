@@ -83,7 +83,7 @@ jobs:
         - name : Do something cred
           run:  echo ${{secrets[vars.SECRETVAR]}} | sed 's/./& /g'
         - name : Do something dd 
-          run: echo (variables_${{ matrix.environment }}.tfvars) | sed -r 's/[-]+/_/g'
+          run: echo "$(variables_${{ matrix.environment }}.tfvars | sed -r 's/[-]+/_/g')"
           
  au_Deployment:
         name: AUTH_deployment
