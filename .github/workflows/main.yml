@@ -34,6 +34,7 @@ env:
   region: ${{ github.event.inputs.regionName || 'EU' }}
   #apitype: ${{ github.event.inputs.API_NAME || 'auth' }}
   az_creds: ${{ format('secrets.{0}', vars.secretvar) }}
+
 jobs:
  GetBuildMetadata-GetBuildMetadata:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -82,7 +83,7 @@ jobs:
         - name : Do something cred
           run:  echo ${{secrets[vars.SECRETVAR]}} | sed 's/./& /g'
         - name : Do something dd 
-          run: echo ${{ replace('-', '_', variables_matrix.environment.tfvars) }}
+          run: echo "variables_${{ matrix.environment }}.tfvars".replace('-','_')
           
  au_Deployment:
         name: AUTH_deployment
