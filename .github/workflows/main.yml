@@ -98,7 +98,7 @@ jobs:
            target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }} 
         uses: ./.github/workflows/reusable.yml
         with:
-          greet: ${{endswith(matrix.target,'eu')}} 
+          greet: ${{endswith(matrix.target,'dum')}} 
         secrets:
           AZURE_CREDENTIALS: "crapcreds"
             
