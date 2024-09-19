@@ -85,7 +85,7 @@ jobs:
         - name : Do something dd 
           run: echo "$(echo variables_${{ matrix.environment }}.tfvars | sed -r 's/[-]+/_/g')"
         - name : Do something ded 
-          run: echo "endswith('west-eu','eu')"
+          run: echo "$(echo endswith('west-eu','eu'))"
  au_Deployment:
         name: AUTH_deployment
         needs: 
