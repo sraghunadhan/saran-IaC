@@ -98,7 +98,7 @@ jobs:
            target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }} 
         uses: ./.github/workflows/reusable.yml
         with:
-          greet: ("variables_${{ matrix.environment }}.tfvars" |  sed -r 's/[-]+/_/g')
+          greet: (echo "variables_${{ matrix.environment }}.tfvars" |  sed -r 's/[-]+/_/g')
         secrets:
           AZURE_CREDENTIALS: "crapcreds"
             
