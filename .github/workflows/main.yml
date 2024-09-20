@@ -79,7 +79,7 @@ jobs:
         - name : Do something CREDS
           run:   echo "${{ matrix.environment }}'"
         - name : Do something sub
-          run:  echo "$(format(kpmgqa-gac-core-weu-windows-{0}, ${{ matrix.environment }}.split('-')[-1])")
+          run:  echo "$(format(kpmgqa-gac-core-weu-windows-{0}, ${{ matrix.environment }}.split('-')[-1]))"
         - name : Do something cred
           run:  echo ${{secrets[vars.SECRETVAR]}} | sed 's/./& /g'
         - name : Do something dd 
