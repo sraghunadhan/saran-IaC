@@ -67,7 +67,7 @@ jobs:
     needs: 
     - GetBuildMetadata-GetBuildMetadata
     - BuildMatrix
-    runs-on: (kpmgqa-gac-core-weu-windows-${{ matrix.environment }}).split('-')[-1]
+    runs-on: "(kpmgqa-gac-core-weu-windows-${{ matrix.environment }}).split('-')[-1]"
     strategy:
         fail-fast: false
         max-parallel: 1
