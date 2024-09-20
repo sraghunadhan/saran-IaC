@@ -67,7 +67,7 @@ jobs:
     needs: 
     - GetBuildMetadata-GetBuildMetadata
     - BuildMatrix
-    runs-on: ${{ split(matrix.environment) }}
+    runs-on: ${{ split(matrix.environment,'-')[0] }}
     strategy:
         fail-fast: false
         max-parallel: 1
