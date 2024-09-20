@@ -67,7 +67,7 @@ jobs:
     needs: 
     - GetBuildMetadata-GetBuildMetadata
     - BuildMatrix
-    runs-on: ${{ vars.runner }}
+    runs-on: windows-latest
     strategy:
         fail-fast: false
         max-parallel: 1
@@ -86,21 +86,23 @@ jobs:
           run: echo "$(echo variables_${{ matrix.environment }}.tfvars | sed -r 's/[-]+/_/g')"
         - name : Do something ded 
           run: echo "$(echo endswith('west-eu','eu'))"
- au_Deployment:
-        name: AUTH_deployment
-        needs: 
-          - GetBuildMetadata-GetBuildMetadata
-          - BuildMatrix
-        strategy:
-          fail-fast: false
-          max-parallel: 1
-          matrix:
-           target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }} 
-        uses: ./.github/workflows/reusable.yml
-        with:
-          greet:  replace("dev", "development", "kadevshi")
-        secrets:
-          AZURE_CREDENTIALS: "crapcreds"
+        - name : Do something ded 
+          run: echo "$(format(kpmgqa-gac-core-weu-windows-{0}, ${{ matrix.environment }}.split('-')[-1])")
+#  au_Deployment:
+#         name: AUTH_deployment
+#         needs: 
+#           - GetBuildMetadata-GetBuildMetadata
+#           - BuildMatrix
+#         strategy:
+#           fail-fast: false
+#           max-parallel: 1
+#           matrix:
+#            target: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }} 
+#         uses: ./.github/workflows/reusable.yml
+#         with:
+#           greet:  replace("dev", "development", "kadevshi")
+#         secrets:
+#           AZURE_CREDENTIALS: "crapcreds"
             
     
 #     steps:
