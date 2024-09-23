@@ -80,5 +80,7 @@ jobs:
             echo ${{ env.region }}
             mails=($(echo ${{ matrix.environment }} | tr "-" " "))
             echo $mails
-            echo $("format(kpmgqa-gac-core-weu-windows-{0}, ${{ matrix.environment }}.split('-')[-1])")
+            echo $(format(kpmgqa-gac-core-weu-windows-{0},$mails)
+            vr=$(format(kpmgqa-gac-core-weu-windows-{0},(${{ matrix.environment }} | tr "-" " "))
+            echo $vr
        shell: bash
