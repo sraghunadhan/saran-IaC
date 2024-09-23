@@ -65,7 +65,7 @@ jobs:
   
   auth_deployment:
      name: AUTH_deployment
-     runs-on: ubuntu-latest
+     runs-on: ${{ contains(matrix.environment, '-dev') || 'windows-latest' || 'ubuntu-latest' }}
      needs: 
       - BuildMatrix
      #if: ${{ inputs.API_NAME == 'auth' }}
