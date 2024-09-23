@@ -78,7 +78,7 @@ jobs:
      - name: blu
        run: | 
             echo ${{ env.region }}
-            arrIN=(${{matrix.environment//-/ }})
-            echo $arrIN[1]
+            mails=($(echo {{matrix.environment }} | tr "-" " "))
+            echo $mails
             echo $("format(kpmgqa-gac-core-weu-windows-{0}, ${{ matrix.environment }}.split('-')[-1])")
        shell: bash
