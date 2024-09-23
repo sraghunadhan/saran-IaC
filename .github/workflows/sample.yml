@@ -78,6 +78,6 @@ jobs:
      - name: blu
        run: | 
             echo ${{ env.region }}
-            echo ${{ matrix.environment }}.split('-')[-1])
+            echo ${{ matrix.environment }}.split('-')[-1]
             echo $("format(kpmgqa-gac-core-weu-windows-{0}, ${{ matrix.environment }}.split('-')[-1])")
        shell: bash
