@@ -5,6 +5,14 @@ on:
       - master
   workflow_dispatch:
     inputs:
+      use_translator:
+        description: 'Include translator directory'
+        required: true
+        type: boolean
+      use_rag:
+        description: 'Include rag directory'
+        required: true
+        type: boolean
       API_NAME:
         description: 'The API to deploy'
         required: true
@@ -74,6 +82,11 @@ jobs:
       max-parallel: 1
       matrix:
         environment: "${{ fromjson(needs.BuildMatrix.outputs.matrix) }}"
+        include:
+          - directory: 'translator'
+            use: ${{ github.event.inputs.use_translator }}
+          - directory: 'rag'
+            use: ${{ github.event.inputs.use_rag }}
      steps:
      - name: blu
        run: | 
