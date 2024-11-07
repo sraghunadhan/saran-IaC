@@ -49,6 +49,5 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Terraform Plan and Apply"
-        if: ${{ matrix.use }}
         run: | 
             echo ${{   matrix.directory }}
