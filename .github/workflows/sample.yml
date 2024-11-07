@@ -40,12 +40,14 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
         include:
-          - directory: 'translator'
+          - environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+            directory: 'translator'
             use: ${{ github.event.inputs.use_translator }}
-          - directory: 'rag'
+          - environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+            directory: 'rag'
             use: ${{ github.event.inputs.use_rag }}
+    environment: ${{ matrix.environment }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
