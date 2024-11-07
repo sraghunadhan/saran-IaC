@@ -9,10 +9,12 @@ on:
         description: 'Include translator directory'
         required: true
         type: boolean
+        default: false
       use_rag:
         description: 'Include rag directory'
         required: true
-        type: boolean  
+        type: boolean 
+        default: false
 env:
   VSTS_ARM_REST_IGNORE_SSL_ERRORS: true
   region: ${{ github.event.inputs.regionName || 'EU' }}
@@ -49,4 +51,4 @@ jobs:
       - name: "Terraform Plan and Apply"
         if: ${{ matrix.use }}
         run: | 
-            echo ${{  github.event.inputs }}
+            echo ${{   matrix.directory }}
