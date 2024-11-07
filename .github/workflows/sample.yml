@@ -42,7 +42,6 @@ jobs:
       matrix:
         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
         directory: [ "${{ github.event.inputs.use_translator && 'translator' }}", "${{ github.event.inputs.use_rag && 'rag' }}" ]
-    environment: ${{ matrix.environment }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
