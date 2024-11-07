@@ -47,7 +47,6 @@ jobs:
           - environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
             directory: 'rag'
             use: ${{ github.event.inputs.use_rag }}
-    environment: ${{ matrix.environment }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
