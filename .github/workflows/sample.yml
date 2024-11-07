@@ -4,7 +4,7 @@ on:
     branches:
       - master
   workflow_dispatch:
-    inputs:
+   inputs:
       use_translator:
         description: 'Include translator directory'
         required: true
@@ -12,88 +12,46 @@ on:
       use_rag:
         description: 'Include rag directory'
         required: true
-        type: boolean
-      API_NAME:
-        description: 'The API to deploy'
-        required: true
-        type: choice
-        options:
-        #   - ad
-          - auth
-        #   - devops
-        #   - powerbi
-          - workspace
-      regionName:
-          description: 'The region to deploy to'
-          required: true
-          type: choice
-          default: EU
-          options:
-            - EU
-      # environmentName:
-      #       description: 'The environment to deploy to'
-      #       required: true
-      #       type: choice
-      #       options:
-      #         - Global-Adv-DEV-WEU
-      installAppServiceExtensions:
-        description: Install App Service Extensions
-        default: false
-        type: boolean
-        required: true
-      deployToSlot:
-        description: Deploy to slot
-        default: true
-        type: boolean
-        required: true
-      buildId:
-        type: string
-        required: true  
+        type: boolean  
 env:
   VSTS_ARM_REST_IGNORE_SSL_ERRORS: true
   region: ${{ github.event.inputs.regionName || 'EU' }}
+
 jobs:
-  
-  #Build matrix based on inputs received
   BuildMatrix:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Set matrix objects
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
     steps:
-    - name: setmatrixobjects
-      id: setmatrixobjects
-      #Below script is to set the matrix objects based on the variable regionconfig
-      run: | 
-          config=${{vars.regionconfig}}
-          echo "matrix=$(echo $config|jq -c [.${{env.region}}[]])" >> $GITHUB_OUTPUT
+      - name: setmatrixobjects
+        id: setmatrixobjects
+        run: |
+          envconfig=${{vars.regionconfig}}
+          echo "matrix=$(echo $envconfig|jq -c [.${{env.REGION}}[]])" >> $GITHUB_OUTPUT
           echo $matrix
-      shell: bash
-  
-  auth_deployment:
-     name: AUTH_deployment
-     runs-on: ${{ contains(matrix.environment, '-dev') || 'windows-latest' || 'ubuntu-latest' }}
-     needs: 
-      - BuildMatrix
-     #if: ${{ inputs.API_NAME == 'auth' }}
-     strategy:
+        shell: bash
+
+  DEPLOY-AVM-Demo:
+    name: Deploy-AVM-${{ matrix.environment }}-${{ matrix.directory }}
+    needs: BuildMatrix
+    runs-on: windows-latest
+    strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
-        environment: "${{ fromjson(needs.BuildMatrix.outputs.matrix) }}"
+        environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
         include:
           - directory: 'translator'
             use: ${{ github.event.inputs.use_translator }}
           - directory: 'rag'
             use: ${{ github.event.inputs.use_rag }}
-     steps:
-     - name: blu
-       run: | 
-            echo ${{ env.region }}
-            mails=($(echo ${{ matrix.environment }} | tr "-" " "))
-            echo $mails
-            echo $(format(kpmgqa-gac-core-weu-windows-{0},$mails))
-            vr=$(format(kpmgqa-gac-core-weu-windows-{0},(${{ matrix.environment }} | tr "-" " "))
-            echo $vr
-       shell: bash
+    environment: ${{ matrix.environment }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: "Terraform Plan and Apply"
+        if: ${{ matrix.use }}
+        run: | 
+            echo ${{  github.event.inputs }}
