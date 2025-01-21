@@ -42,8 +42,7 @@ jobs:
  DEPLOY-Dummy:  
     name: DEPLOY-dummy-${{ matrix.environment }}
     needs: BuildMatrix
-    runs-on:
-      group: ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 1
