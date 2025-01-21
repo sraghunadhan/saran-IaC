@@ -1,0 +1,57 @@
+
+name: 'test_matrix_v2'
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '**'
+      
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - '**'
+
+permissions:
+  id-token: write
+  issues: write
+  pull-requests: write
+  contents: read
+
+env:
+  REGION: "EU"
+
+jobs:
+ #Build matrix deployment environments based on region
+ BuildMatrix:
+  name: Set matrix objects
+  runs-on: ubuntu-latest
+  outputs:
+    matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
+  steps:
+    - name: setmatrixobjects
+      id: setmatrixobjects
+      #Set the matrix environments based on region,additional environments can be updated in regionconfig variable 
+      run: |
+          envconfig=${{vars.regionconfig}}
+          echo "matrix=$(echo $envconfig|jq -c [.${{env.REGION}}[]])" >> $GITHUB_OUTPUT
+          echo $matrix
+      shell: bash
+
+ DEPLOY-Dummy:  
+    name: DEPLOY-dummy-${{ matrix.environment }}
+    needs: BuildMatrix
+    runs-on:
+      group: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+    environment: ${{ matrix.environment }}
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    - name : Do something 
+      run:   echo "${{ matrix.environment }}'"

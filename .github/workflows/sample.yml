@@ -1,53 +1,53 @@
-name: sample
-on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:
-   inputs:
-      use_translator:
-        description: 'Include translator directory'
-        required: true
-        type: boolean
-        default: false
-      use_rag:
-        description: 'Include rag directory'
-        required: true
-        type: boolean 
-        default: false
-env:
-  VSTS_ARM_REST_IGNORE_SSL_ERRORS: true
-  region: ${{ github.event.inputs.regionName || 'EU' }}
+# name: sample
+# on:
+#   push:
+#     branches:
+#       - master
+#   workflow_dispatch:
+#    inputs:
+#       use_translator:
+#         description: 'Include translator directory'
+#         required: true
+#         type: boolean
+#         default: false
+#       use_rag:
+#         description: 'Include rag directory'
+#         required: true
+#         type: boolean 
+#         default: false
+# env:
+#   VSTS_ARM_REST_IGNORE_SSL_ERRORS: true
+#   region: ${{ github.event.inputs.regionName || 'EU' }}
 
-jobs:
-  BuildMatrix:
-    name: Set matrix objects
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
-    steps:
-      - name: setmatrixobjects
-        id: setmatrixobjects
-        run: |
-          envconfig=${{vars.regionconfig}}
-          echo "matrix=$(echo $envconfig|jq -c [.${{env.REGION}}[]])" >> $GITHUB_OUTPUT
-          echo $matrix
-        shell: bash
+# jobs:
+#   BuildMatrix:
+#     name: Set matrix objects
+#     runs-on: ubuntu-latest
+#     outputs:
+#       matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
+#     steps:
+#       - name: setmatrixobjects
+#         id: setmatrixobjects
+#         run: |
+#           envconfig=${{vars.regionconfig}}
+#           echo "matrix=$(echo $envconfig|jq -c [.${{env.REGION}}[]])" >> $GITHUB_OUTPUT
+#           echo $matrix
+#         shell: bash
 
-  DEPLOY-AVM-Demo:
-    name: Deploy-AVM-${{ matrix.environment }}-${{ matrix.directory }}
-    needs: BuildMatrix
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
-        directory: [ "${{ github.event.inputs.use_translator && 'translator' }}", "${{ github.event.inputs.use_rag && 'rag' }}" ]
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#   DEPLOY-AVM-Demo:
+#     name: Deploy-AVM-${{ matrix.environment }}-${{ matrix.directory }}
+#     needs: BuildMatrix
+#     runs-on: windows-latest
+#     strategy:
+#       fail-fast: false
+#       max-parallel: 1
+#       matrix:
+#         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+#         directory: [ "${{ github.event.inputs.use_translator && 'translator' }}", "${{ github.event.inputs.use_rag && 'rag' }}" ]
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: "Terraform Plan and Apply"
-        run: | 
-            echo ${{   matrix.directory }}
+#       - name: "Terraform Plan and Apply"
+#         run: | 
+#             echo ${{   matrix.directory }}
