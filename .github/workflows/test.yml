@@ -14,13 +14,13 @@ on:
        - EU
        - AU
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - '.github/workflows/test.yml'
       - '**'
       
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
        - '.github/workflows/test.yml'
        - '**'
