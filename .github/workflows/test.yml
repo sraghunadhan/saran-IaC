@@ -3,6 +3,16 @@ name: 'test_matrix_v2'
 
 on:
   workflow_dispatch:
+   inputs:
+    regionName:
+      description: 'The region to deploy to'
+      required: false
+      type: choice
+      default: ''
+      options:
+       - US
+       - EU
+       - AU
   push:
     branches: [ "master" ]
     paths:
@@ -20,7 +30,7 @@ permissions:
   contents: read
 
 env:
-  REGION: "EU"
+  REGION:  ${{ github.event.inputs.regionName}}
 
 jobs:
  #Build matrix deployment environments based on region
@@ -34,9 +44,13 @@ jobs:
       id: setmatrixobjects
       #Set the matrix environments based on region,additional environments can be updated in regionconfig variable 
       run: |
-          envconfig=${{vars.regionconfig}}
+        envconfig=${{vars.regionconfig}}
+        if [ -z "${{env.REGION}}" ]; then
+          echo "matrix=$(echo $envconfig|jq -c ['.[]| .[]'])" >> $GITHUB_OUTPUT
+        else
           echo "matrix=$(echo $envconfig|jq -c [.${{env.REGION}}[]])" >> $GITHUB_OUTPUT
-          echo $matrix
+        fi
+        echo $matrix
       shell: bash
 
  DEPLOY-Dummy:  
