@@ -41,6 +41,8 @@ jobs:
   name: Set matrix objects
   runs-on: ubuntu-latest
   steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
     - name: setmatrixobjects
       uses: ./.github/actions/tf_matrix
       with:
