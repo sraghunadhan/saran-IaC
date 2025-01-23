@@ -10,17 +10,18 @@ on:
       type: choice
       default: ''
       options:
+       - All-Regions
        - US
        - EU
        - AU
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - '.github/workflows/test.yml'
       - '**'
       
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
        - '.github/workflows/test.yml'
        - '**'
@@ -39,21 +40,12 @@ jobs:
  BuildMatrix:
   name: Set matrix objects
   runs-on: ubuntu-latest
-  outputs:
-    matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
   steps:
     - name: setmatrixobjects
-      id: setmatrixobjects
-      #Set the matrix environments based on region,additional environments can be updated in regionconfig variable 
-      run: |
-        envconfig=${{vars.regionconfig}}
-        if [ -z "${{env.REGION}}" ]; then
-          echo "matrix=$(echo $envconfig|jq -c ['.[]| .[]'])" >> $GITHUB_OUTPUT
-        else
-          echo "matrix=$(echo $envconfig|jq -c [.${{env.REGION}}[]])" >> $GITHUB_OUTPUT
-        fi
-        echo $matrix
-      shell: bash
+      uses: ./.github/actions/matrix
+      with:
+       regionName: ${{ github.event.inputs.regionName}}
+       regionconfig: ${{ vars.regionconfig}}
 
  DEPLOY-Dummy:  
     name: DEPLOY-dummy-${{ matrix.environment }}
