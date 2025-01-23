@@ -42,7 +42,7 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - name: setmatrixobjects
-      uses: ./.github/actions/matrix
+      uses: ./.github/actions/tf_matrix
       with:
        regionName: ${{ github.event.inputs.regionName}}
        regionconfig: ${{ vars.regionconfig}}
