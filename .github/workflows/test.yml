@@ -32,9 +32,6 @@ permissions:
   pull-requests: write
   contents: read
 
-env:
-  REGION:  ${{ github.event.inputs.regionName}}
-
 jobs:
  #Build matrix deployment environments based on region
  BuildMatrix:
@@ -46,9 +43,10 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
     - name: setmatrixobjects
+      id: setmatrixobjects
       uses: ./.github/actions/tf_matrix
       with:
-       regionName: ${{ github.event.inputs.regionName}}
+       regionName: ${{ inputs.regionName}}
        regionconfig: ${{ vars.regionconfig}}
  DEPLOY-Dummy:  
     name: DEPLOY-dummy-${{ matrix.environment }}

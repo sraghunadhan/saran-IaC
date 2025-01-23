@@ -29,7 +29,7 @@ runs:
         echo $matrix
       shell: bash
     - run: | 
-        echo matrixobject "$Matrix"
+        echo matrixobject
       env:
          MATRIX: ${{ steps.setmatrixobjects.outputs.matrix }}
       shell: bash
