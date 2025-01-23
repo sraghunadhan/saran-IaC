@@ -5,19 +5,19 @@ inputs:
   regionName:
     description: 'The region to deploy to'
     required: false
-    type: string
     default: ''
   regionConfig:
       description: 'GitHUB Region config variable with deployment environment details'
       required: true
-      type: string   
+outputs:
+  matrix:
+    description: "Matrix object"
+    value: ${{ steps.setmatrixobjects.outputs.matrix }}
 runs:
   using: composite
   steps:
     - name: setmatrixobjects
       id: setmatrixobjects
-      outputs:
-        matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
       #Set the matrix environments based on region,additional environments can be updated in regionconfig variable 
       run: |
         envconfig=${{inputs.regionConfig}}
@@ -27,4 +27,9 @@ runs:
           echo "matrix=$(echo $envconfig|jq -c [.${{inputs.regionName}}[]])" >> $GITHUB_OUTPUT
         fi
         echo $matrix
+      shell: bash
+    - run: | 
+        echo matrixobject "$Matrix"
+      env:
+         MATRIX: ${{ steps.setmatrixobjects.outputs.matrix }}
       shell: bash

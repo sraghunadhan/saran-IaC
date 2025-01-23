@@ -40,6 +40,8 @@ jobs:
  BuildMatrix:
   name: Set matrix objects
   runs-on: ubuntu-latest
+  outputs:
+    matrix: ${{ steps.setmatrixobjects.outputs.matrix }}
   steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -48,7 +50,6 @@ jobs:
       with:
        regionName: ${{ github.event.inputs.regionName}}
        regionconfig: ${{ vars.regionconfig}}
-
  DEPLOY-Dummy:  
     name: DEPLOY-dummy-${{ matrix.environment }}
     needs: BuildMatrix
