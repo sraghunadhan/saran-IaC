@@ -1,0 +1,117 @@
+name: triggertest
+
+on:
+  push:
+   branches:
+    - trigger
+    - main
+  workflow_dispatch: {}
+    inputs:
+      regionName:
+            description: 'The region to deploy to'
+            required: true
+            type: choice
+            default: EU
+            options:
+              - US
+              - EU
+              - AU
+              - APAC
+      API_NAME:
+        description: 'The API to deploy'
+        required: true
+        type: choice
+        options:
+        #   - ad
+          - auth
+        #   - devops
+        #   - powerbi
+          - workspace
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  region: ${{ github.event.inputs.regionName || 'EU' }}
+  #apitype: ${{ github.event.inputs.API_NAME || 'auth' }}
+jobs:
+ GetBuildMetadata-GetBuildMetadata:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Get Build Metadata
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+    - name: Determining Build Number
+      id: determineBuildNumber
+      run: |-
+         $buildId = "1.0"
+      shell: pwsh
+ BuildMatrix:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Get matrix objects
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.getmatrixobjects.outputs.matrix}}
+    steps:
+    - name: Getmatrixobjects
+      id: getmatrixobjects
+      run: |
+         envconfig={\"EU\":[\"west-eu\",\"dum-eu\"],\"US\":[\"west-us\",\"dum-us\"],\"AU\":[\"west-au\",\"dum-au\"],\"APAC\":[\"west-apac\",\"dum-apac\"]}
+         echo "matrix=$(echo $envconfig|jq -c [.${{env.region}}[]])" >> $GITHUB_OUTPUT
+         echo $matrix
+      shell: bash
+ Deployment:
+    name: AppDeployment
+    needs: 
+    - GetBuildMetadata-GetBuildMetadata
+    - BuildMatrix
+    runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        max-parallel: 1
+        matrix:
+         environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+      
+    environment: ${{ matrix.environment }}
+    steps:
+        - name : Do something CREDS
+          run:   echo "${{ matrix.environment }}'"
+        - name : Do something sub
+          run:   echo ${{ matrix.environment }}
+
+ au_Deployment:
+        name: AUTH_deployment
+        needs: 
+          - GetBuildMetadata-GetBuildMetadata
+          - BuildMatrix
+        strategy:
+          fail-fast: false
+          max-parallel: 1
+          matrix:
+           environment: ${{ fromjson(needs.BuildMatrix.outputs.matrix) }}
+        environment: ${{ matrix.environment }}
+        uses: ./.github/workflows/reusable.yml 
+        with:
+          greet: "okiedokog"
+        secrets:
+          AZURE_CREDENTIALS: ${{ secrets[vars.SECRETVAR] }}
+        
+
+#  PostDeploy:
+#     name: Post PostDeploy
+#     needs: 
+#       - GetBuildMetadata-GetBuildMetadata
+#       - Deployment
+#     runs-on: ubuntu-latest
+#     strategy:
+#         fail-fast: false
+#         matrix:
+#           environment:
+#             - development
+#             - qa
+#             - cat
+#             - uat
+#     environment: ${{ matrix.environment }}
+    
+#     steps:
+#         - name: Do something
+#           run: echo "Do something post deploy"
